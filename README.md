@@ -140,7 +140,7 @@ pip install -e ".[dev]"
 pytest tests/ -v
 ```
 
-Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to mock HTTP. Integration tests (real API) run with `pytest tests/ -m integration`.
+Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to mock HTTP. Integration tests (real API) run with `pytest tests/ -m integration`. For live tests with a **test account** (including authenticated and optional write tests), see `scripts/README.md`. Run `python scripts/live_test.py` with `HEYCAFE_API_KEY` set, or use **Docker**: `docker build -t heycafe . && docker run --rm -e HEYCAFE_API_KEY=your-key heycafe`.
 
 **Code quality** (same as CI): `pip install -e ".[dev,quality]"` then `ruff check heycafe tests`, `ruff format --check heycafe tests`, and `mypy heycafe`.
 
@@ -155,16 +155,18 @@ Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to m
 
 Optional: set `HEYCAFE_BASE_URL` in integration workflow or repo secrets to override the API base URL.
 
-## Releasing to PyPI (CI)
+## Releasing (CI)
 
-1. **Secret**: In the repo **Settings → Secrets and variables → Actions**, add `PYPI_API_TOKEN` with a [PyPI API token](https://pypi.org/manage/account/token/) (scope: entire account or just this project).
-2. **Version**: Bump `version` in `pyproject.toml` (e.g. `0.1.1`).
-3. **Tag and push**: Create a version tag and push it. The Release workflow will run tests, then publish to PyPI if they pass.
+A **release is created only when you push a version tag** (e.g. `v0.1.1`) or run the Release workflow manually. Passing tests on `main` does not create a release by itself.
+
+1. **Secret**: In **Settings → Secrets and variables → Actions**, add `PYPI_API_TOKEN` with a [PyPI API token](https://pypi.org/manage/account/token/).
+2. **Version**: Bump `version` in `pyproject.toml` (e.g. `0.1.1`), commit and push to `main`.
+3. **Tag and push**: Create and push a version tag. The Release workflow will run tests, publish to PyPI if they pass, and create a GitHub Release.
    ```bash
    git tag v0.1.1
    git push origin v0.1.1
    ```
-   Or run the **Release** workflow manually from the Actions tab (Run workflow); it will use the version in `pyproject.toml` on the current branch.
+   Or run the **Release** workflow manually from the Actions tab (Run workflow); it uses the version in `pyproject.toml` on the current branch. A GitHub Release is created only when the workflow is triggered by a tag push.
 
 ## Publishing to PyPI (manual)
 

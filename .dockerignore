@@ -1,0 +1,33 @@
+# Git and envs
+.git
+.gitignore
+.venv
+venv
+env
+.env
+.env.*
+
+# Build and cache
+__pycache__
+*.py[cod]
+*.egg-info
+.eggs
+dist
+build
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+
+# IDE and OS
+.idea
+.vscode
+*.swp
+.DS_Store
+
+# Docs build (not needed in image)
+docs/_build
+site
+
+# Optional: keep tests/ and scripts/ so we can run pytest and live_test.py
