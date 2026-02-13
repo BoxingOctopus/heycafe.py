@@ -6,10 +6,15 @@
 </div>
 
 [![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
+
 [![Supported Python versions](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
+
 [![Tests and security](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml)
+
 [![CodeQL](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml)
+
 [![Integration tests](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml)
+
 [![Release](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml)
 
 Python SDK for the [Hey.Café](https://hey.cafe) social media platform REST API. The API is open and does not require a developer account for public endpoints; some endpoints require an account API key.
