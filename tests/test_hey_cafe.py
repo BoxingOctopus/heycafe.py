@@ -128,7 +128,8 @@ def test_hey_cafe_conversation_create_uses_content_raw(heycafe_with_key, base_ur
     )
     assert result["id"] == "new1"
     req = responses.calls[0].request
-    assert b"content_raw" in req.body or "content_raw" in req.body.decode()
+    body = req.body if isinstance(req.body, str) else req.body.decode()
+    assert "content_raw" in body
 
 
 @responses.activate
