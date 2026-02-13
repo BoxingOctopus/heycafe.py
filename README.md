@@ -1,5 +1,7 @@
 # heycafe.py
 
+![Hey.Cafe Logo](https://assets.heycafecdn.com/logos/svg/logo_transparent_noshadow_purple.svg?cache=zv11dw9wjbvkcwo)
+
 [![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
 [![Supported Python versions](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![Tests and security](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml)
