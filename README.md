@@ -1,6 +1,6 @@
 # heycafe.py
 
-<img src="https://assets.heycafecdn.com/logos/svg/logo_transparent_noshadow_purple.svg?cache=zv11dw9wjbvkcwo" alt="Responsive Image" style="max-width: 40%; height: auto;">
+<img src="https://assets.heycafecdn.com/logos/svg/logo_transparent_noshadow_purple.svg?cache=zv11dw9wjbvkcwo" alt="Responsive Image" style="max-width: 20%; height: auto;">
 
 
 [![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
