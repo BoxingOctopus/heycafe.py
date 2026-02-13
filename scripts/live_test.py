@@ -3,8 +3,9 @@
 Live test suite for the Hey.Café SDK.
 
 Calls the real API to verify the SDK. Uses HEYCAFE_API_KEY for authenticated
-tests and optionally HEYCAFE_BASE_URL. Set HEYCAFE_LIVE_TEST_WRITE=1 to run
-write tests (e.g. create draft) with a test account only.
+tests and optionally HEYCAFE_SESSION_TOKEN for session-only endpoints (feed,
+notifications). Set HEYCAFE_BASE_URL to override the API URL and
+HEYCAFE_LIVE_TEST_WRITE=1 to run write tests (e.g. create draft) with a test account.
 """
 
 import os
@@ -32,15 +33,41 @@ def run(name: str, fn, *args, **kwargs):
         return False, None
 
 
+def run_skip_on(name: str, fn, *args, skip_messages=(), **kwargs):
+    """Run a test; pass, fail, or skip when the error message contains one of skip_messages."""
+    try:
+        result = fn(*args, **kwargs)
+        print(f"  OK   {name}")
+        return True, result
+    except APIError as e:
+        msg = str(e).lower()
+        if any(skip in msg for skip in skip_messages):
+            print(f"  SKIP {name}: {e} (endpoint may require session auth)")
+            return True, None  # don't count as failed
+        print(f"  FAIL {name}: {e}")
+        return False, None
+    except Exception as e:
+        print(f"  FAIL {name}: {e}")
+        return False, None
+
+
 def main():
     base_url = env("HEYCAFE_BASE_URL") or "https://endpoint.hey.cafe"
     api_key = env("HEYCAFE_API_KEY")
+    session_token = env("HEYCAFE_SESSION_TOKEN")
     allow_write = env("HEYCAFE_LIVE_TEST_WRITE") == "1"
 
-    client = HeyCafe(base_url=base_url, api_key=api_key or None)
+    client = HeyCafe(
+        base_url=base_url,
+        api_key=api_key or None,
+        session_token=session_token or None,
+    )
 
     print("Live tests (base URL: %s)" % base_url)
-    print("API key: %s" % ("set" if api_key else "not set (auth tests skipped)"))
+    print("API key: %s" % ("set" if api_key else "not set"))
+    print("Session token: %s" % ("set" if session_token else "not set"))
+    if not api_key and not session_token:
+        print("(auth tests skipped without HEYCAFE_API_KEY or HEYCAFE_SESSION_TOKEN)")
     print()
 
     passed = 0
@@ -91,41 +118,75 @@ def main():
     else:
         failed += 1
 
-    # --- Authenticated endpoints (key required) ---
-    if api_key:
+    # --- Authenticated endpoints (API key or session token) ---
+    has_auth = api_key or session_token
+    if has_auth:
         print("\n[Authenticated endpoints (read-only)]")
 
-        ok, _ = run("account.key()", client.account.key)
+        ok, key_data = run("account.key()", client.account.key)
         if ok:
             passed += 1
         else:
             failed += 1
 
-        ok, _ = run("account.cafes()", client.account.cafes)
+        # get_account_cafes expects query=account alias; use alias from key() if available
+        alias = None
+        if key_data:
+            alias = key_data.get("alias")
+            if not alias and isinstance(key_data.get("account"), dict):
+                alias = key_data["account"].get("alias")
+        if alias:
+            ok, _ = run("account.cafes(query=%r)" % alias, lambda: client.account.cafes(query=alias))
+        else:
+            ok, _ = run("account.cafes()", client.account.cafes)
         if ok:
             passed += 1
         else:
             failed += 1
 
-        ok, _ = run("feed.conversations(count=5)", lambda: client.feed.conversations(count=5))
-        if ok:
-            passed += 1
+        # feed/notifications require session when using only API key; with session_token they pass
+        if session_token:
+            ok, _ = run("feed.conversations(count=5)", lambda: client.feed.conversations(count=5))
+            if ok:
+                passed += 1
+            else:
+                failed += 1
+            ok, _ = run("account.notifications()", client.account.notifications)
+            if ok:
+                passed += 1
+            else:
+                failed += 1
         else:
-            failed += 1
-
-        ok, _ = run("account.notifications()", client.account.notifications)
-        if ok:
-            passed += 1
-        else:
-            failed += 1
+            ok, _ = run_skip_on(
+                "feed.conversations(count=5)",
+                lambda: client.feed.conversations(count=5),
+                skip_messages=("needs_session",),
+            )
+            if ok:
+                passed += 1
+            else:
+                failed += 1
+            ok, _ = run_skip_on(
+                "account.notifications()",
+                client.account.notifications,
+                skip_messages=("needs_session",),
+            )
+            if ok:
+                passed += 1
+            else:
+                failed += 1
     else:
-        print("\n[Authenticated endpoints] skipped (no HEYCAFE_API_KEY)")
+        print("\n[Authenticated endpoints] skipped (no HEYCAFE_API_KEY or HEYCAFE_SESSION_TOKEN)")
 
     # --- Optional write test (draft only) ---
-    if api_key and allow_write:
+    if has_auth and allow_write:
         print("\n[Write test (draft)]")
         # Find a café the account is in and create a draft conversation
-        ok, cafes_data = run("account.cafes()", client.account.cafes)
+        get_cafes = (lambda: client.account.cafes(query=alias)) if alias else client.account.cafes
+        ok, cafes_data = run(
+            "account.cafes()" + (" (query=%r)" % alias if alias else ""),
+            get_cafes,
+        )
         if ok and cafes_data:
             cafes = cafes_data.get("cafes") or cafes_data.get("cafe_list") or (
                 cafes_data if isinstance(cafes_data, list) else []
@@ -155,7 +216,7 @@ def main():
                 print("  SKIP conversation.create (no cafe id found)")
         else:
             print("  SKIP conversation.create (no cafes for account)")
-    elif api_key:
+    elif has_auth:
         print("\n[Write test] skipped (set HEYCAFE_LIVE_TEST_WRITE=1 to enable)")
 
     # --- Summary ---

@@ -36,8 +36,18 @@ class FeedResource(BaseResource):
             params["cafe"] = cafe
         if account:
             params["account"] = account
-        return self._client.get("get_feed_conversations", params=params, use_api_key=True)
+        return self._client.get(
+            "get_feed_conversations",
+            params=params,
+            use_api_key=True,
+            use_session=True,
+        )
 
     def tags(self, **params: str) -> dict:
-        """Get feed tags. Requires API key."""
-        return self._client.get("get_feed_tags", params=params, use_api_key=True)
+        """Get feed tags. Requires API key or session."""
+        return self._client.get(
+            "get_feed_tags",
+            params=params,
+            use_api_key=True,
+            use_session=True,
+        )

@@ -87,6 +87,45 @@ def test_use_api_key_sends_authorization(client_with_key, base_url):
 
 
 @responses.activate
+def test_use_session_sends_query_param(base_url):
+    from heycafe.client import HeyCafeClient
+
+    client = HeyCafeClient(
+        base_url=base_url,
+        api_key=None,
+        session_token="my-session-token",
+    )
+    responses.add(
+        responses.GET,
+        f"{base_url}/get_feed_conversations",
+        json={"system_api_error": False, "response_data": {"conversations": []}},
+        status=200,
+    )
+    client.get("get_feed_conversations", use_api_key=True, use_session=True)
+    req = responses.calls[0].request
+    assert "query=my-session-token" in req.url
+
+
+@responses.activate
+def test_session_only_no_authentication_error(base_url):
+    from heycafe.client import HeyCafeClient
+
+    client = HeyCafeClient(
+        base_url=base_url,
+        api_key=None,
+        session_token="session-only",
+    )
+    responses.add(
+        responses.GET,
+        f"{base_url}/get_feed_conversations",
+        json={"system_api_error": False, "response_data": {}},
+        status=200,
+    )
+    client.get("get_feed_conversations", use_api_key=True, use_session=True)
+    assert len(responses.calls) == 1
+
+
+@responses.activate
 def test_post_sends_data(client_with_key, base_url):
     responses.add(
         responses.POST,

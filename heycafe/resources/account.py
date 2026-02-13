@@ -39,16 +39,35 @@ class AccountResource(BaseResource):
         return self._client.get("get_account_friends", params=params, use_api_key=True)
 
     def key(self, **params: str) -> dict:
-        """Get account API key info. Requires API key."""
-        return self._client.get("get_account_key", params=params, use_api_key=True)
+        """Get account API key info. Requires API key or session token.
+
+        The API expects the key/session as the 'query' parameter.
+        If no query is given, the client's api_key or session_token is sent.
+        """
+        if "query" not in params:
+            if self._client.api_key:
+                params = {**params, "query": self._client.api_key}
+            elif self._client.session_token:
+                params = {**params, "query": self._client.session_token}
+        return self._client.get(
+            "get_account_key",
+            params=params,
+            use_api_key=True,
+            use_session=True,
+        )
 
     def mutes(self, **params: str) -> dict:
         """Get account mutes. Requires API key."""
         return self._client.get("get_account_mutes", params=params, use_api_key=True)
 
     def notifications(self, **params: str) -> dict:
-        """Get account notifications. Requires API key."""
-        return self._client.get("get_account_notifications", params=params, use_api_key=True)
+        """Get account notifications. Requires API key or session."""
+        return self._client.get(
+            "get_account_notifications",
+            params=params,
+            use_api_key=True,
+            use_session=True,
+        )
 
     def referrals(self, **params: str) -> dict:
         """Get account referrals. Requires API key."""

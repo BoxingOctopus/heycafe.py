@@ -13,6 +13,9 @@ docker build -t heycafe .
 # Run live tests (pass API key via env)
 docker run --rm -e HEYCAFE_API_KEY="your-test-account-key" heycafe
 
+# With session token (for feed/notifications)
+docker run --rm -e HEYCAFE_SESSION_TOKEN="your-session-cookie-value" heycafe
+
 # Optional: override base URL or enable write test
 docker run --rm \
   -e HEYCAFE_API_KEY="your-key" \
@@ -70,7 +73,8 @@ All environment variables (`HEYCAFE_API_KEY`, `HEYCAFE_BASE_URL`, `HEYCAFE_LIVE_
 
    ```bash
    export HEYCAFE_API_KEY="your-test-account-api-key"
-   # optional:
+   # optional (for feed/notifications when API key returns "needs_session"):
+   export HEYCAFE_SESSION_TOKEN="session-cookie-value-from-browser"
    export HEYCAFE_BASE_URL="https://endpoint.hey.cafe"
    ```
 
@@ -92,13 +96,31 @@ HEYCAFE_API_KEY="your-key" python scripts/live_test.py
 ## What gets tested
 
 - **Without API key:** Public endpoints only (system hello, endpoints, account info for "hey", café info, explore, search, stats).
-- **With API key:** Same as above, plus authenticated read-only calls (account info for self, account cafes, feed conversations, notifications). Optionally, a **draft** conversation can be created in a café the test account is in (set `HEYCAFE_LIVE_TEST_WRITE=1` to enable; the script creates a draft only, then does not publish it).
+- **With API key:** Same as above, plus authenticated read-only calls (account info for self, account cafes). Feed and notifications may return “needs_session” with only an API key; use a session token to test those (see below).
+- **With session token:** Same as API key for `account.key()` and `account.cafes()`, and **feed** and **notifications** are tested as real calls (no skip). Optionally, a **draft** conversation can be created (set `HEYCAFE_LIVE_TEST_WRITE=1`).
+
+### Getting a session token (for feed / notifications)
+
+Some endpoints (e.g. feed conversations, account notifications) require a **session** rather than only an API key. To test them:
+
+1. Log in to [Hey.Café](https://hey.cafe) in a browser.
+2. Open DevTools → Application (or Storage) → Cookies → `https://hey.cafe` (or the domain the app uses).
+3. Copy the value of the session cookie (often named `session` or similar).
+4. Run the live test with that value:
+   ```bash
+   export HEYCAFE_SESSION_TOKEN="paste-cookie-value-here"
+   python scripts/live_test.py
+   ```
+   You can set both `HEYCAFE_API_KEY` and `HEYCAFE_SESSION_TOKEN`; the script uses the key for key/cafes and the session for feed/notifications.
+
+Session tokens are tied to your browser login and may expire; treat them as sensitive and do not commit them.
 
 ## Environment variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `HEYCAFE_API_KEY` | For auth tests | Test account API key |
+| `HEYCAFE_SESSION_TOKEN` | No | Session token (e.g. browser cookie) for feed/notifications when API key returns “needs_session” |
 | `HEYCAFE_BASE_URL` | No | API base URL (default: https://endpoint.hey.cafe) |
 | `HEYCAFE_LIVE_TEST_WRITE` | No | Set to `1` to run write tests (e.g. create draft). Use only with a test account. |
 

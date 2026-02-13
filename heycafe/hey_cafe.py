@@ -39,14 +39,18 @@ class HeyCafe:
         self,
         api_key: str | None = None,
         base_url: str | None = None,
+        session_token: str | None = None,
         **client_kwargs,
     ):
         """
         :param api_key: Account API key for authenticated endpoints
         :param base_url: Override API base URL (default: https://endpoint.hey.cafe)
+        :param session_token: Optional session token (e.g. from browser login) for
+            endpoints that require a session (feed, notifications)
         :param client_kwargs: Additional arguments for HeyCafeClient (timeout, session, etc.)
         """
         client_kwargs["api_key"] = api_key
+        client_kwargs["session_token"] = session_token
         if base_url is not None:
             client_kwargs["base_url"] = base_url
         self._client = HeyCafeClient(**client_kwargs)

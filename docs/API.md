@@ -7,8 +7,11 @@ This document summarizes the SDK surface. For full endpoint details (parameters,
 ```python
 from heycafe import HeyCafe
 
-client = HeyCafe(api_key=None)
+client = HeyCafe(api_key=None, session_token=None)
 ```
+
+- **api_key** – For endpoints that accept an API key (Bearer or `query`).
+- **session_token** – Optional. For endpoints that require a session (e.g. feed conversations, account notifications), pass a session token (e.g. from a browser login cookie). When set, it is sent as the `query` parameter on session-capable requests.
 
 ### Attributes (resource groups)
 
@@ -26,7 +29,7 @@ client = HeyCafe(api_key=None)
 - **bot** – Bot: `giphy_search()`, `language_detect()`, `language_translate()`, `website_meta()`, `safespace_text()`
 - **temp** – Temp: `file()`, `preview()`
 
-Methods that require an API key will raise `AuthenticationError` if the client was created without one.
+Methods that require an API key or session will raise `AuthenticationError` if neither `api_key` nor `session_token` is set (for those endpoints that accept either).
 
 ## Low-level client: `HeyCafeClient`
 
@@ -36,15 +39,17 @@ from heycafe import HeyCafeClient
 client = HeyCafeClient(
     base_url="https://endpoint.hey.cafe",
     api_key=None,
+    session_token=None,
     error_boolean=True,
     error_no_http=False,
     timeout=30.0,
 )
 ```
 
-- **get(endpoint, params=None, use_api_key=False)** – GET request; returns `response_data` or full body.
+- **session_token** – Optional. Sent as `query` on requests that use `use_session=True` (e.g. feed, notifications).
+- **get(endpoint, params=None, use_api_key=False, use_session=False)** – GET request; returns `response_data` or full body.
 - **post(endpoint, params=None, data=None, use_api_key=False)** – POST request; returns `response_data` or full body.
-- **request(endpoint, method="GET", params=None, data=None, use_api_key=False)** – Generic request.
+- **request(endpoint, method="GET", params=None, data=None, use_api_key=False, use_session=False)** – Generic request.
 
 Endpoint names match the docs (e.g. `get_system_hello`, `get_account_info`, `post_conversation_create`).
 

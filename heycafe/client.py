@@ -24,6 +24,7 @@ class HeyCafeClient:
         self,
         base_url: str = DEFAULT_BASE_URL,
         api_key: str | None = None,
+        session_token: str | None = None,
         error_boolean: bool = True,
         error_no_http: bool = False,
         timeout: float = 30.0,
@@ -34,6 +35,8 @@ class HeyCafeClient:
 
         :param base_url: API base URL (default: https://endpoint.hey.cafe)
         :param api_key: Account API key for endpoints that require authentication
+        :param session_token: Optional session token (e.g. from browser login) for
+            endpoints that require a session (e.g. feed, notifications)
         :param error_boolean: If True, request error_boolean=true so errors are booleans
         :param error_no_http: If True, API keeps HTTP 200 on errors
         :param timeout: Request timeout in seconds
@@ -41,6 +44,7 @@ class HeyCafeClient:
         """
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
+        self.session_token = session_token
         self.error_boolean = error_boolean
         self.error_no_http = error_no_http
         self.timeout = timeout
@@ -67,6 +71,7 @@ class HeyCafeClient:
         params: dict[str, Any] | None = None,
         data: dict[str, Any] | None = None,
         use_api_key: bool = False,
+        use_session: bool = False,
     ) -> dict[str, Any]:
         """
         Perform an API request and return the parsed response.
@@ -75,20 +80,25 @@ class HeyCafeClient:
         :param method: HTTP method (GET or POST)
         :param params: Query parameters (for GET) or form data (for POST)
         :param data: Optional POST body (merged with params for POST)
-        :param use_api_key: If True, require api_key to be set
+        :param use_api_key: If True, require api_key to be set (sends Bearer header)
+        :param use_session: If True, send session_token as query param when set;
+            some endpoints (feed, notifications) require a session rather than API key
         :return: response_data from the API (or full response if no response_data)
         :raises AuthenticationError: When use_api_key=True but no key is set
         :raises APIError: When the API returns an error
         """
-        if use_api_key and not self.api_key:
+        if use_api_key and not self.api_key and not (use_session and self.session_token):
             raise AuthenticationError(
-                "This endpoint requires an API key. Set api_key when creating the "
-                "client or pass it to the method."
+                "This endpoint requires an API key or session token. Set api_key or "
+                "session_token when creating the client."
             )
 
         url = f"{self.base_url}/{endpoint}"
         req_params = {**self._default_params()}
         req_data: dict[str, Any] = {}
+
+        if use_session and self.session_token and (params or {}).get("query") is None:
+            req_params["query"] = self.session_token
 
         if method.upper() == "GET":
             if params:
@@ -120,9 +130,16 @@ class HeyCafeClient:
         endpoint: str,
         params: dict[str, Any] | None = None,
         use_api_key: bool = False,
+        use_session: bool = False,
     ) -> dict[str, Any]:
         """GET request to the given endpoint."""
-        return self.request(endpoint, method="GET", params=params, use_api_key=use_api_key)
+        return self.request(
+            endpoint,
+            method="GET",
+            params=params,
+            use_api_key=use_api_key,
+            use_session=use_session,
+        )
 
     def post(
         self,
