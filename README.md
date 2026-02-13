@@ -167,6 +167,8 @@ docker run --rm heycafe pytest tests/ -m "not integration" -v
 docker run --rm heycafe pytest tests/ -m integration -v
 ```
 
+**Using Podman:** Podman is Docker-compatible. Use the same commands above but replace `docker` with `podman` (e.g. `podman build -t heycafe .`, `podman run --rm ...`). The same Dockerfile works. See `scripts/README.md` for more.
+
 More details and env vars: `scripts/README.md`.
 
 ### Without Docker
