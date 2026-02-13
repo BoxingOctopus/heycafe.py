@@ -2,7 +2,7 @@
 
 <!-- ![Hey.Cafe Logo](img/heycafe_py_logo.svg) -->
 <div align="center">
-<img src="img/heycafe_py_logo.svg" alt="Large Image" width="100" />
+<img src="img/heycafe_py_logo.svg" alt="Large Image" width="300" />
 </div>
 
 [![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
