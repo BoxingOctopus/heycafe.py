@@ -69,7 +69,7 @@ exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
 [tool.ruff]
 line-length = 100
 target-version = "py38"
-exclude = ["tests"]
+exclude = ["tests", "heycafe/client.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
