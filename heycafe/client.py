@@ -122,9 +122,7 @@ class HeyCafeClient:
         use_api_key: bool = False,
     ) -> dict[str, Any]:
         """GET request to the given endpoint."""
-        return self.request(
-            endpoint, method="GET", params=params, use_api_key=use_api_key
-        )
+        return self.request(endpoint, method="GET", params=params, use_api_key=use_api_key)
 
     def post(
         self,

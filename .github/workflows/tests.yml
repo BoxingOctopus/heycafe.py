@@ -50,7 +50,7 @@ jobs:
         run: ruff check heycafe
 
       - name: Ruff (format)
-        run: ruff format --check heycafe
+        run: ruff format --check .
 
       - name: mypy (type check)
         run: mypy heycafe
