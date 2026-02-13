@@ -1,5 +1,5 @@
 """HTTP client for the Hey.Café API."""
-
+# fmt: off
 from __future__ import annotations
 
 import base64
@@ -186,3 +186,4 @@ def _serialize_params(params: dict[str, Any]) -> dict[str, str]:
 def encode_content(text: str) -> str:
     """Base64-encode content for endpoints that require it (e.g. conversation content)."""
     return base64.b64encode(text.encode("utf-8")).decode("ascii")
+# fmt: on
