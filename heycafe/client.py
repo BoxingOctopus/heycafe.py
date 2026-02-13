@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Any
+from typing import Any, cast
 
 import requests
 
@@ -162,8 +162,8 @@ class HeyCafeClient:
             )
 
         if "response_data" in body:
-            return body["response_data"]
-        return body
+            return cast(dict[str, Any], body["response_data"])
+        return cast(dict[str, Any], body)
 
 
 def _serialize_params(params: dict[str, Any]) -> dict[str, str]:

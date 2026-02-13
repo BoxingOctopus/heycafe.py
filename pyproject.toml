@@ -75,7 +75,7 @@ exclude = ["tests", "heycafe/client.py"]
 select = ["E", "F", "I", "UP"]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_ignores = true
 disallow_untyped_defs = false

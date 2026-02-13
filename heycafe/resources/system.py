@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from heycafe.resources.base import BaseResource
 
 
@@ -10,7 +12,7 @@ class SystemResource(BaseResource):
 
     def hello(self) -> str:
         """Ping the API. Returns 'hello'."""
-        return self._client.get("get_system_hello")
+        return cast(str, self._client.get("get_system_hello"))
 
     def endpoints(self) -> dict:
         """Get recommended endpoint and list of all endpoints for this session."""
