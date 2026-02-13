@@ -4,6 +4,7 @@
 [![Tests and security](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml)
 [![CodeQL](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml)
 [![Integration tests](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml)
+[![Release](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml)
 
 Python SDK for the [Hey.Café](https://hey.cafe) social media platform REST API. The API is open and does not require a developer account for public endpoints; some endpoints require an account API key.
 
@@ -149,12 +150,22 @@ Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to m
 | **Tests and security** (`.github/workflows/tests.yml`) | Unit tests (Python 3.8–3.12), **code quality** (Ruff lint + format, mypy), **SAST** (Bandit), **SCA** (pip-audit). |
 | **CodeQL** (`.github/workflows/codeql.yml`) | **SAST** via GitHub CodeQL (security-extended queries). |
 | **Integration tests** (`.github/workflows/integration.yml`) | Calls the live Hey.Café API (public endpoints). Runs on push/PR, daily schedule, and `workflow_dispatch`. |
+| **Release** (`.github/workflows/release.yml`) | Runs tests; if they pass, builds and publishes to PyPI. Triggered by pushing a version tag (`v*`) or via **Actions → Run workflow**. |
 
 Optional: set `HEYCAFE_BASE_URL` in integration workflow or repo secrets to override the API base URL.
 
-## Publishing to PyPI
+## Releasing to PyPI (CI)
 
-The project is set up for PyPI. To publish:
+1. **Secret**: In the repo **Settings → Secrets and variables → Actions**, add `PYPI_API_TOKEN` with a [PyPI API token](https://pypi.org/manage/account/token/) (scope: entire account or just this project).
+2. **Version**: Bump `version` in `pyproject.toml` (e.g. `0.1.1`).
+3. **Tag and push**: Create a version tag and push it. The Release workflow will run tests, then publish to PyPI if they pass.
+   ```bash
+   git tag v0.1.1
+   git push origin v0.1.1
+   ```
+   Or run the **Release** workflow manually from the Actions tab (Run workflow); it will use the version in `pyproject.toml` on the current branch.
+
+## Publishing to PyPI (manual)
 
 1. **Check the name**: Ensure the name `heycafe` is available on [PyPI](https://pypi.org/project/heycafe/) (or use a different name in `pyproject.toml`).
 2. **Install build tools**: `pip install -e ".[publish]"` (adds `build` and `twine`).
