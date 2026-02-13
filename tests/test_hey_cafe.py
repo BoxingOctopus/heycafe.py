@@ -1,9 +1,6 @@
 """Tests for high-level HeyCafe client and resources."""
 
-import pytest
 import responses
-
-from heycafe import HeyCafe
 
 
 @responses.activate

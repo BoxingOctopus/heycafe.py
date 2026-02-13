@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import base64
-from typing import Any, Dict, Optional
+from typing import Any
 
 import requests
 
@@ -23,11 +23,11 @@ class HeyCafeClient:
     def __init__(
         self,
         base_url: str = DEFAULT_BASE_URL,
-        api_key: Optional[str] = None,
+        api_key: str | None = None,
         error_boolean: bool = True,
         error_no_http: bool = False,
         timeout: float = 30.0,
-        session: Optional[requests.Session] = None,
+        session: requests.Session | None = None,
     ):
         """
         Initialize the client.
@@ -64,10 +64,10 @@ class HeyCafeClient:
         self,
         endpoint: str,
         method: str = "GET",
-        params: Optional[Dict[str, Any]] = None,
-        data: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        data: dict[str, Any] | None = None,
         use_api_key: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Perform an API request and return the parsed response.
 
@@ -82,12 +82,13 @@ class HeyCafeClient:
         """
         if use_api_key and not self.api_key:
             raise AuthenticationError(
-                "This endpoint requires an API key. Set api_key when creating the client or pass it to the method."
+                "This endpoint requires an API key. Set api_key when creating the "
+                "client or pass it to the method."
             )
 
         url = f"{self.base_url}/{endpoint}"
         req_params = {**self._default_params()}
-        req_data: Dict[str, Any] = {}
+        req_data: dict[str, Any] = {}
 
         if method.upper() == "GET":
             if params:
@@ -117,23 +118,31 @@ class HeyCafeClient:
     def get(
         self,
         endpoint: str,
-        params: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
         use_api_key: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """GET request to the given endpoint."""
-        return self.request(endpoint, method="GET", params=params, use_api_key=use_api_key)
+        return self.request(
+            endpoint, method="GET", params=params, use_api_key=use_api_key
+        )
 
     def post(
         self,
         endpoint: str,
-        params: Optional[Dict[str, Any]] = None,
-        data: Optional[Dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        data: dict[str, Any] | None = None,
         use_api_key: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """POST request to the given endpoint."""
-        return self.request(endpoint, method="POST", params=params, data=data, use_api_key=use_api_key)
+        return self.request(
+            endpoint,
+            method="POST",
+            params=params,
+            data=data,
+            use_api_key=use_api_key,
+        )
 
-    def _parse_response(self, response: requests.Response, endpoint: str) -> Dict[str, Any]:
+    def _parse_response(self, response: requests.Response, endpoint: str) -> dict[str, Any]:
         try:
             body = response.json()
         except ValueError:
@@ -159,9 +168,9 @@ class HeyCafeClient:
         return body
 
 
-def _serialize_params(params: Dict[str, Any]) -> Dict[str, str]:
+def _serialize_params(params: dict[str, Any]) -> dict[str, str]:
     """Convert params to string values for query/body."""
-    out: Dict[str, str] = {}
+    out: dict[str, str] = {}
     for k, v in params.items():
         if v is None:
             continue

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from heycafe.client import encode_content
 from heycafe.resources.base import BaseResource
 
@@ -22,11 +20,11 @@ class ConversationResource(BaseResource):
     def create(
         self,
         cafe: str,
-        content: Optional[str] = None,
-        content_raw: Optional[str] = None,
-        file: Optional[str] = None,
-        image_url: Optional[str] = None,
-        alt: Optional[str] = None,
+        content: str | None = None,
+        content_raw: str | None = None,
+        file: str | None = None,
+        image_url: str | None = None,
+        alt: str | None = None,
         draft: bool = False,
     ) -> dict:
         """
@@ -54,8 +52,12 @@ class ConversationResource(BaseResource):
 
     def edit(self, query: str, **data: str) -> dict:
         """Edit a conversation. Requires API key."""
-        return self._client.post("post_conversation_edit", data={"query": query, **data}, use_api_key=True)
+        return self._client.post(
+            "post_conversation_edit", data={"query": query, **data}, use_api_key=True
+        )
 
     def publish(self, query: str) -> dict:
         """Publish a draft conversation. Requires API key."""
-        return self._client.post("post_conversation_publish", data={"query": query}, use_api_key=True)
+        return self._client.post(
+            "post_conversation_publish", data={"query": query}, use_api_key=True
+        )

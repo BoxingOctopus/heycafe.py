@@ -7,8 +7,6 @@ then use .system, .account, .cafe, etc. for typed access to endpoints.
 
 from __future__ import annotations
 
-from typing import Optional
-
 from heycafe.client import HeyCafeClient
 from heycafe.resources import (
     AccountResource,
@@ -39,8 +37,8 @@ class HeyCafe:
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
-        base_url: Optional[str] = None,
+        api_key: str | None = None,
+        base_url: str | None = None,
         **client_kwargs,
     ):
         """

@@ -1,7 +1,5 @@
 """Tests for SDK exceptions."""
 
-import pytest
-
 from heycafe.exceptions import (
     APIError,
     AuthenticationError,

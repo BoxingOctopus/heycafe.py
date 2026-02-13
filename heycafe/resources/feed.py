@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from heycafe.resources.base import BaseResource
 
 
@@ -12,11 +10,11 @@ class FeedResource(BaseResource):
 
     def conversations(
         self,
-        start: Optional[int] = None,
-        count: Optional[int] = None,
-        rule: Optional[str] = None,
-        cafe: Optional[str] = None,
-        account: Optional[str] = None,
+        start: int | None = None,
+        count: int | None = None,
+        rule: str | None = None,
+        cafe: str | None = None,
+        account: str | None = None,
     ) -> dict:
         """
         Get feed conversations. Requires API key for personalized feed.

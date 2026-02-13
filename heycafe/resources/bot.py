@@ -1,4 +1,4 @@
-"""Bot/utility endpoints: giphy_search, language_detect, language_translate, website_meta, safespace_text."""
+"""Bot/utility endpoints: giphy_search, language_detect, language_translate, etc."""
 
 from __future__ import annotations
 

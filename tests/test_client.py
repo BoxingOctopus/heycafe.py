@@ -3,7 +3,6 @@
 import pytest
 import responses
 
-from heycafe import HeyCafeClient
 from heycafe.exceptions import APIError, AuthenticationError
 
 

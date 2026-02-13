@@ -10,7 +10,6 @@ import os
 import pytest
 
 from heycafe import HeyCafe
-from heycafe.exceptions import APIError
 
 
 # Base URL can be overridden for testing (e.g. staging)

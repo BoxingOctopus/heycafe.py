@@ -77,7 +77,9 @@ class AccountResource(BaseResource):
 
     def unsubscribe(self, query: str) -> dict:
         """Unsubscribe from an account. Requires API key."""
-        return self._client.post("post_account_unsubscribe", data={"query": query}, use_api_key=True)
+        return self._client.post(
+            "post_account_unsubscribe", data={"query": query}, use_api_key=True
+        )
 
     def update_ghost_cafes(self, **data: str) -> dict:
         """Update ghost cafes preference. Requires API key."""
