@@ -133,6 +133,44 @@ except APIError as e:
 
 ## Tests
 
+### With Docker (no local Python needed)
+
+Build once, then run any of the commands below. No need to install Python or dependencies on your machine.
+
+```bash
+# Build the image (from project root)
+docker build -t heycafe .
+```
+
+**Live test script** (hits the real API; use a test account key for full coverage):
+
+```bash
+# Public endpoints only
+docker run --rm heycafe
+
+# With API key (authenticated + read-only tests)
+docker run --rm -e HEYCAFE_API_KEY="your-test-account-key" heycafe
+
+# Optional: enable draft-creation write test (test account only)
+docker run --rm -e HEYCAFE_API_KEY="your-key" -e HEYCAFE_LIVE_TEST_WRITE=1 heycafe
+```
+
+**Unit tests** (mocked HTTP, no API key):
+
+```bash
+docker run --rm heycafe pytest tests/ -m "not integration" -v
+```
+
+**Integration tests** (real API, public endpoints only):
+
+```bash
+docker run --rm heycafe pytest tests/ -m integration -v
+```
+
+More details and env vars: `scripts/README.md`.
+
+### Without Docker
+
 From the project root:
 
 ```bash
@@ -140,9 +178,9 @@ pip install -e ".[dev]"
 pytest tests/ -v
 ```
 
-Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to mock HTTP. Integration tests (real API) run with `pytest tests/ -m integration`. For live tests with a **test account** (including authenticated and optional write tests), see `scripts/README.md`. Run `python scripts/live_test.py` with `HEYCAFE_API_KEY` set, or use **Docker**: `docker build -t heycafe . && docker run --rm -e HEYCAFE_API_KEY=your-key heycafe`.
+Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to mock HTTP. Integration tests (real API) run with `pytest tests/ -m integration`. Live test script: `python scripts/live_test.py` (set `HEYCAFE_API_KEY` for auth tests; see `scripts/README.md`).
 
-**Code quality** (same as CI): `pip install -e ".[dev,quality]"` then `ruff check heycafe tests`, `ruff format --check heycafe tests`, and `mypy heycafe`.
+**Code quality** (same as CI): `pip install -e ".[dev,quality]"` then `ruff check heycafe`, `ruff format --check heycafe`, and `mypy heycafe`.
 
 ## CI / GitHub Actions
 
