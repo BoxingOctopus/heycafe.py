@@ -1,6 +1,8 @@
 # heycafe.py
 
-![Hey.Cafe Logo](img/heycafe_py_logo.svg)
+<!-- ![Hey.Cafe Logo](img/heycafe_py_logo.svg) -->
+
+<img src="img/heycafe_py_logo.svg" alt="Large Image" style="max-width: 10%;">
 
 [![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
 [![Supported Python versions](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
