@@ -1,6 +1,7 @@
 # heycafe.py
 
 [![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
+[![Supported Python versions](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![Tests and security](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml)
 [![CodeQL](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml)
 [![Integration tests](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml)
@@ -20,7 +21,7 @@ pip install -e .
 # pip install heycafe
 ```
 
-Requirements: Python 3.8+, [requests](https://pypi.org/project/requests/).
+Requirements: Python 3.9+, [requests](https://pypi.org/project/requests/).
 
 ## Quick start
 
@@ -147,7 +148,7 @@ Optional: `pytest-cov` for coverage. Unit tests use the `responses` library to m
 
 | Workflow | Description |
 |----------|-------------|
-| **Tests and security** (`.github/workflows/tests.yml`) | Unit tests (Python 3.8–3.12), **code quality** (Ruff lint + format, mypy), **SAST** (Bandit), **SCA** (pip-audit). |
+| **Tests and security** (`.github/workflows/tests.yml`) | Unit tests (Python 3.9–3.12), **code quality** (Ruff lint + format, mypy), **SAST** (Bandit), **SCA** (pip-audit). |
 | **CodeQL** (`.github/workflows/codeql.yml`) | **SAST** via GitHub CodeQL (security-extended queries). |
 | **Integration tests** (`.github/workflows/integration.yml`) | Calls the live Hey.Café API (public endpoints). Runs on push/PR, daily schedule, and `workflow_dispatch`. |
 | **Release** (`.github/workflows/release.yml`) | Runs tests; if they pass, builds and publishes to PyPI. Triggered by pushing a version tag (`v*`) or via **Actions → Run workflow**. |
