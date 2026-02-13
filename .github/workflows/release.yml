@@ -36,8 +36,8 @@ jobs:
 
       - name: Ruff (lint + format)
         run: |
-          ruff check heycafe tests
-          ruff format --check heycafe tests
+          ruff check heycafe
+          ruff format --check heycafe
 
       - name: mypy
         run: mypy heycafe

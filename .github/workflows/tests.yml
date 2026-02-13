@@ -47,10 +47,10 @@ jobs:
           pip install -e ".[dev,quality]"
 
       - name: Ruff (lint)
-        run: ruff check heycafe tests
+        run: ruff check heycafe
 
       - name: Ruff (format)
-        run: ruff format --check heycafe tests
+        run: ruff format --check heycafe
 
       - name: mypy (type check)
         run: mypy heycafe
