@@ -5,23 +5,52 @@
 <img src="img/heycafe_py_logo.svg" alt="Large Image" width="300" />
 </div>
 
-[![PyPI version](https://img.shields.io/pypi/v/heycafe.svg)](https://pypi.org/project/heycafe/)
+- - -
 
-[![Supported Python versions](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776ab?logo=python&logoColor=white)](https://www.python.org/downloads/)
+<div align="center" style="margin: 1em 0;">
+  <div style="display: flex; justify-content: center; gap: 1em; flex-wrap: wrap;">
+    <a href="https://pypi.org/project/heycafe/">
+      <img alt="PyPI version" src="https://img.shields.io/pypi/v/heycafe.svg" />
+    </a>
+    <a href="https://www.python.org/downloads/">
+      <img alt="Supported Python versions" src="https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-3776ab?logo=python&logoColor=white" />
+    </a>
+    <a href="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml">
+      <img alt="Tests and security" src="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml/badge.svg" />
+    </a>
+  </div>
+  <div style="display: flex; justify-content: center; gap: 1em; margin-top: 0.5em; flex-wrap: wrap;">
+    <a href="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml">
+      <img alt="CodeQL" src="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml/badge.svg" />
+    </a>
+    <a href="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml">
+      <img alt="Integration tests" src="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml/badge.svg" />
+    </a>
+    <a href="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml">
+      <img alt="Release" src="https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml/badge.svg" />
+    </a>
+  </div>
+</div>
 
-[![Tests and security](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/tests.yml)
+- - -
 
-[![CodeQL](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/codeql.yml)
+## Table of Contents
 
-[![Integration tests](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/integration.yml)
+- [Description](#description)
+- [Installation](#installation)
+- [Quick start](#quick-start)
+  - [With API key (authenticated endpoints)](#with-api-key-authenticated-endpoints)
+- [License](#license)
 
-[![Release](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml/badge.svg)](https://github.com/BoxingOctopus/heycafe.py/actions/workflows/release.yml)
+## Description
 
-Python SDK for the [Hey.Café](https://hey.cafe) social media platform REST API. The API is open and does not require a developer account for public endpoints; some endpoints require an account API key.
+[Hey.Café](https://hey.cafe) is a social network designed to be easy to use. When you join, you can create new conversations and join communities called cafés based on your interests. It's are free to use with no ads, no trackers, and built in Canada.
+
+This Python SDK enables developers to connect to Hey.Café's REST API. The API is open and does not require a developer account for public endpoints; some endpoints require an account API key.
 
 **API documentation:** [https://endpoint.hey.cafe](https://endpoint.hey.cafe)
 
-**Badges:** PyPI shows the current stable release. Each CI badge links to its workflow; if a badge is failing, open it to see which job failed (unit tests, code quality, SAST, SCA, or integration).
+**Requirements:** Python 3.9+, [Requests](https://pypi.org/project/requests/).
 
 ## Installation
 
@@ -30,8 +59,6 @@ pip install -e .
 # or from PyPI (when published)
 # pip install heycafe
 ```
-
-Requirements: Python 3.9+, [requests](https://pypi.org/project/requests/).
 
 ## Quick start
 
